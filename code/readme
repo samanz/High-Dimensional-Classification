@@ -1,0 +1,114 @@
+--------------------------------------------------------------------------
+  glmnet.m: fit an elasticnet model path
+ --------------------------------------------------------------------------
+ 
+  DESCRIPTION:
+     Fit a regularization path for the elasticnet at a grid of values for
+     the regularization parameter lambda. Can deal with all shapes of data.
+     Fits linear, logistic and multinomial regression models.
+ 
+  USAGE: 
+     fit = glmnet(x, y)
+     fit = glmnet(x, y, family, options)
+ 
+  EXTERNAL FUNCTIONS:
+  options         = glmnetSet;                  provided with glmnet.m
+ 
+  INPUT ARGUMENTS:
+  x           Input matrix, of dimension nobs x nvars; each row is an
+              observation vector. Currently sparse format is NOT supported.
+  y           Response variable. Quantitative for family =
+              'gaussian'. For family = 'binomial' should be either a vector
+              of two levels, or a two-column matrix of counts or
+              proportions. For family = 'multinomial', can be either a
+              vector of nc>=2 levels, or a matrix with nc columns of counts
+              or proportions.
+  family      Reponse type. (See above). Default is 'gaussian'. 
+  options     A structure that may be set and altered by glmnetSet (type 
+              help glmnetSet).
+ 
+  OUTPUT ARGUMENTS:
+  fit         A structure.
+  fit.a0      Intercept sequence of length length(fit.lambda). 
+  fit.beta    For "elnet" and "lognet" models, a nvars x length(lambda) 
+              matrix of coefficients. For "multnet", a list of nc such
+              matrices, one for each class.
+  fit.lambda  The actual sequence of lambda values used.
+  fit.dev     The fraction of (null) deviance explained (for "elnet", this 
+              is the R-square).
+  fit.nulldev Null deviance (per observation).
+  fit.df      The number of nonzero coefficients for each value of lambda.
+              For "multnet", this is the number of variables with a nonzero
+              coefficient for any class.
+  fit.dfmat   For "multnet" only. A matrix consisting of the number of
+              nonzero coefficients per class.
+  fit.dim     Dimension of coefficient matrix (ices).
+  fit.npasses Total passes over the data summed over all lambda values.
+  fit.jerr    Error flag, for warnings and errors (largely for internal 
+              debugging).
+  fit.class   Type of regression - internal usage.
+ 
+  DETAILS:
+     The sequence of models implied by lambda is fit by coordinate descent.
+     For family = 'gaussian' this is the lasso sequence if alpha = 1, else
+     it is the elasticnet sequence. For family = 'binomial' or family =
+     "multinomial", this is a lasso or elasticnet regularization path for
+     fitting the linear logistic or multinomial logistic regression paths.
+     Sometimes the sequence is truncated before options.nlambda values of
+     lambda have been used, because of instabilities in the logistic or
+     multinomial models near a saturated fit. glmnet(..., family =
+     'binomial') fits a traditional logistic regression model for the
+     log-odds. glmnet(..., family = 'multinomial') fits a symmetric
+     multinomial model, where each class is represented by a linear model
+     (on the log-scale). The penalties take care of redundancies. A
+     two-class "multinomial" model will produce the same fit as the
+     corresponding "binomial" model, except the pair of coefficient
+     matrices will be equal in magnitude and opposite in sign, and half the
+     "binomial" values. Note that the objective function for
+     "gaussian" is 
+                 1 / (2 * nobs) RSS + lambda * penalty
+     , and for the logistic models it is 
+                 1 / nobs - loglik + lambda * penalty
+ 
+  LICENSE: GPL-2
+ 
+  DATE: 14 Jul 2009
+ 
+  AUTHORS:
+     Algorithm was designed by Jerome Friedman, Trevor Hastie and Rob Tibshirani 
+     Fortran code was written by Jerome Friedman 
+     R wrapper (from which the MATLAB wrapper was adapted) was written by Trevor Hasite
+     MATLAB wrapper was written and maintained by Hui Jiang, jiangh@stanford.edu 
+     Department of Statistics, Stanford University, Stanford, California, USA.
+ 
+  REFERENCES:
+     Friedman, J., Hastie, T. and Tibshirani, R. (2009)
+     Regularization Paths for Generalized Linear Models via Coordinate Descent.
+     Journal of Statistical Software, 33(1), 2010
+ 
+  SEE ALSO:
+     glmnetSet, glmnetPrint, glmnetPlot, glmnetPredict and glmnetCoef methods.
+  
+  EXAMPLES:
+     x=randn(100,20);
+     y=randn(100,1);
+     g2=randsample(2,100,true);
+     g4=randsample(4,100,true);
+     fit1=glmnet(x,y);
+     glmnetPrint(fit1);
+     glmnetCoef(fit1,0.01) % extract coefficients at a single value of lambda
+     glmnetPredict(fit1,'response',x(1:10,:),[0.01,0.005]') % make predictions
+     fit2=glmnet(x,g2,'binomial');
+     fit3=glmnet(x,g4,'multinomial');
+ 
+  DEVELOPMENT: 
+     14 Jul 2009: Original version of glmnet.m written.
+     26 Jan 2010: Fixed a bug in the description of y, pointed out by
+                  Peter Rijnbeek from Erasmus University.
+     09 Mar 2010: Fixed a bug of printing "ka = 2", pointed out by 
+                  Ramon Casanova from Wake Forest University.
+     25 Mar 2010: Fixed a bug when p > n in multinomial fitting, pointed
+                  out by Gerald Quon from University of Toronto
+     25 Jul 2010: Check for input matrix format and size
+     27 Sep 2010: Fixed a bug of undefined "df" in multinomial fitting,
+                  pointed by Jeff Howbert from Insilicos.

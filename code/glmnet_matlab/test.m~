@@ -1,0 +1,14 @@
+%load data in sparse format
+[trainlab train] = load_sparse('/courses/cs600/cs689/dbbelang/fp/data/train.dat');
+[testlab test] = load_sparse('/courses/cs600/cs689/dbbelang/fp/data/test.dat');
+
+%convert to non-sparse format
+train = full(train);
+trainlab = full(trainlab);
+test = full(test);
+testlab = full(testlab);
+
+fit = glmnet(x,xlab);
+glmnetPrint(fit);
+glmnetCoef(fit,0.01) % extract coefficients at a single value of lambda
+glmnetPredict(fit,'response',test,testlab) % make predictions
