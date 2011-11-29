@@ -5,7 +5,7 @@ addpath(paths.matlab);
 addpath(paths.glmnet);
 outdatadir = paths.outdatadir;
 
-[all_lab all] = load_uci(path.data);
+[all_lab all] = load_uci(paths.data);
 all_lab = all_lab + 1;
 %partition into train and test
 r = randperm(length(all_lab));
