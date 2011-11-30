@@ -26,7 +26,7 @@ yTest = All_lab((trainsize + 1):end,:);
 
 numfolds = 10;
 noreduce = @deal;
-PCA = @pca;
+PCA = @sparse_pca;
 
 classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',noreduce,'options', '-t 0'), ...
                      'ridge',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',0,'type','')),...
@@ -39,9 +39,8 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
 
 
 %Techniques = {'svm'};%,'lasso','lasso_pca'};
-%Techniques = {'naivebayes_nosmooth'};
+Techniques = {'naivebayes_nosmooth_pca'};
 
-Techniques = {'svm'};
 nT = length(Techniques);
 rate = zeros(1,nT);
 %train_set_sizes = [23 1200 ];
