@@ -1,5 +1,0 @@
-function [OTrain OTest] = pca(Train,Test)
-[coeff OTrain] = princomp(Train);
-%truncate:
-OTrain = OTrain(:,
-OTest = Test*coeff;

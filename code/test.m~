@@ -1,4 +1,0 @@
-A = rand(100,200);
-[A1 A1M A1S] = zscore(A);
-A2 = myzscore(A);
-all(A1(:) == A2(:))
