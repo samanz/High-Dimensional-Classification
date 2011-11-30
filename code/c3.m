@@ -38,8 +38,8 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
                     'quad_analysis',struct('function',@matlabclassifierWrapper,'reduce',noreduce,'options', 'diagLinear'));
 
 
-%Techniques = {'svm'};%,'lasso','lasso_pca'};
-Techniques = {'naivebayes_nosmooth_pca'};
+Techniques = {'lasso'};%,'lasso_pca'};
+%Techniques = {'naivebayes_nosmooth_pca'};
 
 nT = length(Techniques);
 rate = zeros(1,nT);

@@ -1,5 +1,6 @@
 function out = glmnetWrapper(xTrain,yTrain,xTest,yTest,opt)
-
+xTrain = full(xTrain);
+xTest = full(xTest);
 %the family variable specifies which type of response variables we're using
 %family = 'gaussian'; % refers to quantitiative y.  
 %family = 'binomial'; % refers to 0-1 y
