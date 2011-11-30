@@ -1,27 +1,28 @@
-clear All; close All;
-runExperiments = 0;
+clear all; close all;
+runExperiments = 1;
 %Todo: make sure data is z-scored
-%figure out how to automaticAlly select which lambda value to use in glmnet
+%figure out how to automatically select which lambda value to use in glmnet
 paths = getLocalPaths();
 addpath(paths.matlab);
 addpath(paths.glmnet);
 outdatadir = paths.outdatadir;
 
-[All_lab All] = load_uci(paths.data);
-All_lab = All_lab + 1;
+[all_lab all] = load_uci(paths.data);
+all_lab = all_lab + 1;
 %partition into train and test
-r = randperm(length(All_lab));
-All = All(r,:);
-All_lab = All_lab(r);
-xTrain = All(1:4000,:);
-yTrain = All_lab(1:4000,:);
-xTest = All(4001:end,:);
-yTest = All_lab(4001:end,:);
+r = randperm(length(all_lab));
+all = all(r,:);
+all_lab = all_lab(r);
+xTrain = all(1:4000,:);
+yTrain = all_lab(1:4000,:);
+xTest = all(4001:end,:);
+yTest = all_lab(4001:end,:);
 
-numfolds = 1;
+numfolds = 10;
 noreduce = @deal;
 PCA = @pca;
 
+c = cvpartition(all_lab,'k',numfolds);
 classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',noreduce,'options', '-t 0'), ...
                      'ridge',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',0,'type','')),...
                      'lasso',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',1,'type','')),...
@@ -32,8 +33,8 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
                     'quad_analysis',struct('function',@matlabclassifierWrapper,'reduce',noreduce,'options', 'diagLinear'));
 
 
-Techniques = {'naivebayes_nosmooth_pca','ridge'};%,'lasso','lasso_pca'};
-%Techniques = {'naivebayes_nosmooth'};
+%Techniques = {'naivebayes_nosmooth_pca','lasso_pca'};
+Techniques = {'naivebayes_nosmooth'};
 
 %Techniques = {'naivebayes_nosmooth','svm','ridge','lasso'};
 nT = length(Techniques);
@@ -45,7 +46,7 @@ if(runExperiments == 1)
 for train_set_size = train_set_sizes
 for Ti = 1:nT
     technique = Techniques{Ti};
-    disp(['using technique: ' technique ' with train set size ' int2str(train_set_size)]);
+    disp(['using technique: ' technique]);
     T = getfield(classifiers,technique);
     classifier = T.function;
     options = T.options;
@@ -53,7 +54,6 @@ for Ti = 1:nT
     out = zeros(1,numfolds);
     for i = 1:numfolds
         out(i) = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xTest,yTest,options);
-        disp(['finished iteration ' i]);
     end
 
     savefile = [outdatadir technique '.' int2str(train_set_size) '.mat'];
@@ -73,7 +73,7 @@ for ii = 1:length(train_set_sizes);
     end
 end
 figure(1);
-colors = {'red','blue','green','cyan','black','yellow','purple','cyan'};
+colors = {'red','blue','green','brown','black','yellow','purple','cyan'};
 hold on;
 for Ti = 1:nT
     E = std(data(Ti,:,:),0,3);

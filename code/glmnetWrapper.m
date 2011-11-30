@@ -1,4 +1,4 @@
-function [tr1 tr2 tr3] = glmnetWrapper(xTrain,yTrain,xTest,yTest,opt)
+function out = glmnetWrapper(xTrain,yTrain,xTest,yTest,opt)
 
 %the family variable specifies which type of response variables we're using
 %family = 'gaussian'; % refers to quantitiative y.  
@@ -38,6 +38,4 @@ acc = zeros(1,nl);
 for ii = 1:nl
      acc = mean( yTest == p(:,ii));
 end
-tr1 = acc;
-tr2 = 0;
-tr3 = 0;
+out = acc(end);

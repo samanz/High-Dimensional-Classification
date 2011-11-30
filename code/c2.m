@@ -5,18 +5,21 @@ outdatadir = './data/';
 
 [all_lab all] = load_uci('../../homework/hw4/matlab/spam/spambase/spambase.data');
 all_lab = all_lab + 1;
-r = randperm(length(all_lab));
-r = r(1:100);
-all_lab = all_lab(r);
-all = all(r,:);
+if(1 ==0)
+    r = randperm(length(all_lab));
+    r = r(1:100);
+    all_lab = all_lab(r);
+    all = all(r,:);
+end
 numfolds = 10;
+noreduce = @deal;
 c = cvpartition(all_lab,'k',numfolds);
-classifiers =        struct('svm',struct('function',@libsvmWrapper,'options', '-t 0'), ...
-                     'ridge',struct('function',@glmnetWrapper,'options', struct('family','binomial','alpha',0,'type','')),...
-                     'lasso',struct('function',@glmnetWrapper,'options', struct('family','binomial','alpha',1,'type','')),...
-                     'elnet',struct('function',@glmnetWrapper,'options', struct('family','binomial','alpha',.5,'type','')),...
-                     'naivebayes_nosmooth',  struct('function',@naiveBayesWrapper,'options', 'diagLinear'),...
-                     'quad_analysis',struct('function',@matlabclassifierWrapper,'options', 'diagLinear'));
+classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',noreduce,'options', '-t 0'), ...
+                     'ridge',struct('function',@glmnetWrapper,,'reduce',noreduce,'options', struct('family','binomial','alpha',0,'type','')),...
+                     'lasso',struct('function',@glmnetWrapper,,'reduce',noreduce,'options', struct('family','binomial','alpha',1,'type','')),...
+                     'elnet',struct('function',@glmnetWrapper,,'reduce',noreduce,'options', struct('family','binomial','alpha',.5,'type','')),...
+                     'naivebayes_nosmooth',  struct('function',@naiveBayesWrapper,'reduce',noreduce,'options', 'diagLinear'),...
+                     'quad_analysis',struct('function',@matlabclassifierWrapper,'reduce',noreduce,'options', 'diagLinear'));
 
 
 
@@ -43,4 +46,4 @@ for Ti = 1:nT
     S = load(infile);
     data(Ti,:) = S.out;
 end
-boxplot(data);
+boxplot(data');
