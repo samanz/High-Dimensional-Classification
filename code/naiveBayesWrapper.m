@@ -1,6 +1,7 @@
 function err  = naiveBayesWrapper(xTrain,yTrain,xTest,yTest,opt)
-%todo: check to make sure mvmn option is correct.
- 
- nb = NaiveBayes.fit(xTrain,yTrain);
+ yTrainSmooth = [yTrain; 1; 2];
+ Os = ones(1,size(xTrain,2));
+ xTrainSmooth = [xTrain; Os; Os];
+ nb = NaiveBayes.fit(xTrainSmooth,yTrainSmooth);
  
  err = mean(yTest == predict(nb,xTest));
