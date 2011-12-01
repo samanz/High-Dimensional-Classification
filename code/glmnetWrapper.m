@@ -33,10 +33,13 @@ type = 'link'; %gives probability of 1 for binomial models and fitted values
 %prediction at lambda values along vector s
 
 %here p(i,j) refers to the prediction for the ith instance at lambda index j
-p = glmnetPredict(fit,'class',xTest); % make predictions
+pD = glmnetPredict(fit,'class',xDev); % make predictions
+pT = glmnetPredict(fit,'class',xTest); % make predictions
 nl = length(fit.lambda);
 acc = zeros(1,nl);
 for ii = 1:nl
-     acc = mean( yTest == p(:,ii));
+     acc(ii) = mean( yDev == pD(:,ii));
 end
-out = acc(end);
+[m im] = max(acc);
+
+out = mean( yTest == pT(:,im));

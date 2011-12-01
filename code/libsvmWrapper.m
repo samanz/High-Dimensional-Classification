@@ -1,4 +1,4 @@
-function out = libsvmWrapper(xTrain,yTrain,xTest,yTest,opt)
+function out = libsvmWrapper(xTrain,yTrain,xDev,yDev,xTest,yTest,opt)
 
 [a b c] = svmpredict(yTest,xTest,svmtrain(yTrain,xTrain,opt));
 

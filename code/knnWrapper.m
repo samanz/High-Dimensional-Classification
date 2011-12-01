@@ -1,4 +1,4 @@
-function out  = knnWrapper(xTrain,yTrain,xTest,yTest,opt)
+function out  = knnWrapper(xTrain,yTrain,xDev,yDev,xTest,yTest,opt)
 
     IDX = knnsearch(xTrain,xTest,'K', opt.k, 'Distance', opt.distance);
     a = zeros(length(IDX),1);
