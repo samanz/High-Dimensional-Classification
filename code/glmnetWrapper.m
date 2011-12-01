@@ -1,4 +1,4 @@
-function out = glmnetWrapper(xTrain,yTrain,xTest,yTest,opt)
+function out = glmnetWrapper(xTrain,yTrain,xDev,yDev,xTest,yTest,opt)
 xTrain = full(xTrain);
 xTest = full(xTest);
 %the family variable specifies which type of response variables we're using

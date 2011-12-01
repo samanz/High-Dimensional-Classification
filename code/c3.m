@@ -1,6 +1,5 @@
 clear All; close All;
 runExperiments = 1;
-%Todo: make sure data is z-scored
 %figure out how to automaticAlly select which lambda value to use in glmnet
 paths = getLocalPaths();
 addpath(paths.matlab);
@@ -15,14 +14,17 @@ All = data;
 All_lab = All_lab + 1;
 %partition into train and test
 r = randperm(length(All_lab));
-trainsize = 3500;
+trainsize = 3300;
+devsize = 200;
 z = find(sum(All,1) ~= 0);
 All = All(r,z);
 All_lab = All_lab(r);
 xTrain = All(1:trainsize,:);
 yTrain = All_lab(1:trainsize,:);
-xTest = All((trainsize + 1):end,:);
-yTest = All_lab((trainsize + 1):end,:);
+xDev = All((trainsize + 1):(trainsize + devsize),:);
+yDev = All_lab((trainsize + 1):(trainsize + devsize),:);
+xTest = All((trainsize + devsize + 1):end,:);
+yTest = All_lab((trainsize + devsize + 1):end,:);
 
 numfolds = 10;
 noreduce = @deal;
@@ -59,7 +61,7 @@ for Ti = 1:nT
     times = zeros(1,numfolds);
     for i = 1:numfolds
         tic 
-        out(i) = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xTest,yTest,options);
+        out(i) = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
         times(i) = toc;
         disp(['finished iteration ' i]);
     end

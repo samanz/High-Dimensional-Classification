@@ -1,4 +1,4 @@
-function out = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xTest,yTest,options)
+function out = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options)
 
 %subsample train set
 r = randperm(length(yTrain));
@@ -7,5 +7,5 @@ SmallxTrain = xTrain(r,:);
 SmallyTrain = yTrain(r,:);
 
 %reduce dimensionality of sets
-[RxTrain RxTest] = reduce(SmallxTrain,xTest);
-out = classifier(RxTrain,SmallyTrain,RxTest,yTest,options);
+[RxTrain RxDev RxTest] = reduce(SmallxTrain,xDev,xTest);
+out = classifier(RxTrain,SmallyTrain,RxDev,yDev,RxTest,yTest,options);
