@@ -29,6 +29,7 @@ yTest = All_lab((trainsize + devsize + 1):end,:);
 numfolds = 10;
 noreduce = @deal;
 PCA = @sparse_pca;
+RP = @rand_proj;
 
 classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',noreduce,'options', '-t 0'), ...
                      'ridge',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',0,'type','')),...
@@ -39,10 +40,12 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
                      'naivebayes_smooth',  struct('function',@naiveBayesWrapper,'reduce',noreduce,'options', 'smooth'),...
                      'naivebayes_smooth_pca',  struct('function',@naiveBayesWrapper,'reduce',PCA,'options', 'smooth'),...    
                      'lasso_pca',struct('function',@glmnetWrapper,'reduce',PCA,'options', struct('family','binomial','alpha',1,'type','')),...
-                     'quad_analysis',struct('function',@matlabclassifierWrapper,'reduce',noreduce,'options', 'diagLinear'));
+                     'quad_analysis',struct('function',@matlabclassifierWrapper,'reduce',noreduce,'options', 'diagLinear'),...
+                     'naivebayes_smooth_rand',  struct('function',@naiveBayesWrapper,'reduce',RP,'options', 'smooth'));
 
 
-Techniques = {'svm','ridge','naivebayes_nosmooth_pca','lasso'};%,'lasso_pca'};
+%Techniques = {'svm','ridge','naivebayes_nosmooth_pca','lasso'};%,'lasso_pca'};
+Techniques = {'naivebayes_smooth_rand'};%,'lasso_pca'};
 %Techniques = {'naivebayes_nosmooth_pca'};
 
 nT = length(Techniques);
