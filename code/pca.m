@@ -1,6 +1,6 @@
-function [OTrain OTest] = pca(Train,Test)
+function [OTrain OTest] = pca(Train,Test,opt)
 [coeff OTrain] = princomp(Train);
 %truncate:
-dim = 50;
+dim = opt.dim;
 OTrain = OTrain(:,1:dim);
 OTest = Test*coeff(:,1:dim);
