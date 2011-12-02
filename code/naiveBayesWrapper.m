@@ -1,7 +1,7 @@
 function err  = naiveBayesWrapper(xTrain,yTrain,xDev,yDev,xTest,yTest,opt)
-    if(strcmp(opt,'nosmooth'))
+    if(opt.smooth)
         err = naiveBayesWrapperNoSmooth(xTrain,yTrain,xDev,yDev,xTest,yTest,opt);
-    elseif(strcmp(opt,'nosmooth'))
+    else
         err = naiveBayesWrapperSmooth(xTrain,yTrain,xDev,yDev,xTest,yTest,opt);
     end
 end

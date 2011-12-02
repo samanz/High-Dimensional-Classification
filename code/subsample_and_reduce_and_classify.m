@@ -7,5 +7,5 @@ SmallxTrain = xTrain(r,:);
 SmallyTrain = yTrain(r,:);
 
 %reduce dimensionality of sets
-[RxTrain RxDev RxTest] = reduce(SmallxTrain,xDev,xTest);
+[RxTrain RxDev RxTest] = reduce(SmallxTrain,xDev,xTest,options);
 out = classifier(RxTrain,SmallyTrain,RxDev,yDev,RxTest,yTest,options);

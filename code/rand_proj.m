@@ -1,5 +1,5 @@
-function [OTrain ODev OTest] = rand_proj(Train,Dev,Test)
-    k = 50; % Dimentions to project to
+function [OTrain ODev OTest] = rand_proj(Train,Dev,Test,opt)
+    k = opt.dim; % Dimentions to project to
     
     d = size(Train, 2); % Orginal dimentionality of data
     
