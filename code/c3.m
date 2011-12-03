@@ -16,8 +16,8 @@ All_lab = All_lab + 1;
 r = randperm(length(All_lab));
 trainsize = 3300;
 devsize = 200;
-z = find(sum(All,1) ~= 0);
-All = All(r,z);
+%z = find(sum(All,1) ~= 0);
+%All = All(r,z);  
 All_lab = All_lab(r);
 xTrain = All(1:trainsize,:);
 yTrain = All_lab(1:trainsize,:);
@@ -28,17 +28,18 @@ yTest = All_lab((trainsize + devsize + 1):end,:);
 
 numfolds = 10;
 noreduce = @(x,y,z,w)deal(x,y,z);
-load_pca_data = 1;
+load_pca_data = 0;
 if(load_pca_data)
     PCA_Matrix = load(paths.PCA);  
 end
 
 PCA = @(train,dev,test,options)sparse_pca(train,dev,test,options,PCA_Matrix.M);
 RP = @rand_proj;  
-
+nonnative_indices = [];
 classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',noreduce,'options', '-t 0'), ...
                      'ridge',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',0,'type','')),...
                      'lasso',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',1,'type','')),...
+                     'lassoSupport',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',1,'type','','nonnative_indices',nonnative_indices)),...
                      'elnet',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',.5,'type','')),...
                      'naivebayes_nosmooth',  struct('function',@naiveBayesWrapper,'reduce',noreduce,'options', struct('smooth',0,'dim',50)),...
                      'naivebayes_nosmooth_pca',  struct('function',@naiveBayesWrapper,'reduce',PCA,'options', struct('smooth',0,'dim',50)),...
