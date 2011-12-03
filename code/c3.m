@@ -27,10 +27,14 @@ xTest = All((trainsize + devsize + 1):end,:);
 yTest = All_lab((trainsize + devsize + 1):end,:);
 
 numfolds = 10;
-noreduce = @deal;
-PCA = @sparse_pca;
-RP = @rand_proj;
-  
+noreduce = @(x,y,z,w)deal(x,y,z);
+load_pca_data = 1;
+if(load_pca_data)
+    PCA_Matrix = load(paths.PCA);  
+end
+
+PCA = @(train,dev,test,options)sparse_pca(train,dev,test,options,PCA_Matrix.M);
+RP = @rand_proj;  
 
 classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',noreduce,'options', '-t 0'), ...
                      'ridge',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',0,'type','')),...
@@ -45,14 +49,13 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
                      'naivebayes_smooth_rand',  struct('function',@naiveBayesWrapper,'reduce',RP,'options', struct('smooth',1,'dim',50)));
 
 %Techniques = {'svm','ridge','naivebayes_nosmooth_pca','lasso'};%,'lasso_pca'};
-Techniques = {'naivebayes_smooth_rand'};%,'lasso_pca'};
+Techniques = {'svm'};%,'lasso_pca'};
 %Techniques = {'naivebayes_nosmooth_pca'};
 
 nT = length(Techniques);
 rate = zeros(1,nT);
-%train_set_sizes = [23 1200 ];
-
-train_set_sizes = [200];%floor(linspace(1000,4000,10));%[1000 1200 1500 2000 2300 2700 3000];
+%train_set_sizes = [trainsize];
+train_set_sizes = floor(linspace(1000,trainsize,10));
 if(runExperiments == 1)
 for train_set_size = train_set_sizes
 for Ti = 1:nT
@@ -79,22 +82,34 @@ end
 end
 end
 nT = length(Techniques);
-data = zeros(nT,length(train_set_sizes),numfolds);
+Accdata = zeros(nT,length(train_set_sizes),numfolds);
+Timedata = zeros(nT,length(train_set_sizes),numfolds);
+
 for ii = 1:length(train_set_sizes);
     train_set_size = train_set_sizes(ii);
     for Ti = 1:nT
         technique = Techniques{Ti};
         infile = [outdatadir technique '.' int2str(train_set_size) '.mat'];
         S = load(infile);
-        data(Ti,ii,:) = S.out;
+        Accdata(Ti,ii,:) = S.out;
+        infile = [outdatadir technique '.' int2str(train_set_size) '.times.mat'];
+        S = load(infile);
+        Timedata(Ti,ii,:) = S.times;
     end
 end
-figure(1);
 colors = {'red','blue','green','cyan','black','yellow','purple','cyan'};
 hold on;
 for Ti = 1:nT
-    E = std(data(Ti,:,:),0,3);
-    M = mean(data(Ti,:,:),3);
-    errorbar(train_set_sizes,M,E,'color',colors{Ti})
+    %accuracy
+    hold on; figure(1);
+    E = std(Accdata(Ti,:,:),0,3);
+    M = mean(Accdata(Ti,:,:),3);
+    errorbar(train_set_sizes,M,E,'color',colors{Ti});
+    hold off;
+    %time 
+    hold on; figure(2);
+    E = std(Timedata(Ti,:,:),0,3);
+    M = mean(Timedata(Ti,:,:),3);
+    errorbar(train_set_sizes,M,E,'color',colors{Ti});
 end
 hold off;
