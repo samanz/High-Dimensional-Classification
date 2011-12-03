@@ -1,6 +1,5 @@
-function [OTrain ODev OTest] = sparse_pca(Train,Dev,Test)
-dim = 50;
-[U S V] = svds(Train,dim);
-OTrain = U*S;
-ODev = Dev*V;
-OTest = Test*V;
+function [OTrain ODev OTest] = sparse_pca(Train,Dev,Test,opt,M)
+Vd = M.V(:,1:opt.dim);
+OTrain = Train*Vd;
+ODev = Dev*Vd;
+OTest = Test*Vd;
