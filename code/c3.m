@@ -10,7 +10,12 @@ outdatadir = paths.outdatadir;
 datafile = paths.data;
 load(datafile);
 All_lab = labels;
-All = data;
+if(exist('expanded'))
+    All = expanded;
+end;
+if(exist('data'))
+    All = data;
+end;
 All_lab = All_lab + 1;
 %partition into train and test
 r = randperm(length(All_lab));
