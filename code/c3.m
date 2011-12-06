@@ -28,7 +28,8 @@ yTest = All_lab((trainsize + devsize + 1):end,:);
 
 numfolds = 10;
 noreduce = @(x,y,z,w)deal(x,y,z);
-load_pca_data = 1;
+load_pca_data = 0;
+load_pca_data = 0;
 load_rand_data = 0;
 if(load_pca_data)
     PCA_Matrix = load(paths.PCA);  
@@ -40,11 +41,13 @@ end
 
 PCA = @(train,dev,test,options)sparse_pca(train,dev,test,options,PCA_Matrix.M);
 RP = @(train,dev,test,options)rand_proj_read(train,dev,test,options,RAND_Matrix.R);  
-nonnative_indices = [];
+
+nonnative_indices = size(xTrain,2)/2:size(xTrain,2);
+
 classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',noreduce,'options', '-t 0'), ...
                      'ridge',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',0,'type','')),...
                      'lasso',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',1,'type','')),...
-                     'lassoSupport',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',1,'type','','nonnative_indices',nonnative_indices)),...
+                     'lassoSupport',struct('function',@glmnetWrapperFindSupport,'reduce',noreduce,'options', struct('family','binomial','alpha',1,'type','','nonnative_indices',nonnative_indices)),...
                      'elnet',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',.5,'type','')),...
                      'naivebayes_nosmooth',  struct('function',@naiveBayesWrapper,'reduce',noreduce,'options', struct('smooth',0,'dim',50)),...
                      'naivebayes_nosmooth_pca',  struct('function',@naiveBayesWrapper,'reduce',PCA,'options', struct('smooth',0,'dim',50)),...
@@ -55,7 +58,8 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
                      'naivebayes_smooth_rand',  struct('function',@naiveBayesWrapper,'reduce',RP,'options', struct('smooth',1,'dim',50)));
 
 %Techniques = {'svm','ridge','naivebayes_nosmooth_pca','lasso'};%,'lasso_pca'};
-Techniques = {'naivebayes_smooth_pca'};
+
+Techniques = {'lassoSupport'};
 
 nT = length(Techniques);
 rate = zeros(1,nT);
