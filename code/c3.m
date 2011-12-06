@@ -47,7 +47,7 @@ end
 PCA = @(train,dev,test,options)sparse_pca(train,dev,test,options,PCA_Matrix.M);
 RP = @(train,dev,test,options)rand_proj_read(train,dev,test,options,RAND_Matrix.R);  
 
-nonnative_indices = size(xTrain,2)/2:size(xTrain,2);
+nonnative_indices = (size(xTrain,2)/2):size(xTrain,2);
 
 classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',noreduce,'options', '-t 0'), ...
                      'ridge',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',0,'type','')),...
@@ -70,6 +70,12 @@ nT = length(Techniques);
 rate = zeros(1,nT);
 %train_set_sizes = [trainsize];
 train_set_sizes = floor(linspace(1000,trainsize,10));
+if(length(train_set_sizes) == 1 & train_set_sizes(1) == trainsize)
+    evaluator_style = 'crossval';
+else
+    evaluator_style = 'subsample';
+end
+
 if(runExperiments == 1)
 for train_set_size = train_set_sizes
 for Ti = 1:nT
