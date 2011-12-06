@@ -1,4 +1,4 @@
-clear All; close All;
+%clear All; close All;
 runExperiments = 1 ;
 %figure out how to automaticAlly select which lambda value to use in glmnet
 paths = getLocalPaths();
@@ -26,10 +26,10 @@ yDev = All_lab((trainsize + 1):(trainsize + devsize),:);
 xTest = All((trainsize + devsize + 1):end,:);
 yTest = All_lab((trainsize + devsize + 1):end,:);
 
-numfolds = 1;
+numfolds = 3;
 noreduce = @deal;
 load_pca_data = 0;
-load_rand_data = 1;
+load_rand_data = 0;
 if(load_pca_data)
     PCA_Matrix = load(paths.PCA);  
 end
@@ -61,7 +61,7 @@ nT = length(Techniques);
 rate = zeros(1,nT);
 
 train_set_sizes = [trainsize];
-dims = 1:10;%round(logspace(log(10),log(size(xTrain,2)),10));
+dims = [2.^(1:10) 1200];
 numdims = length(dims);
 if(runExperiments == 1)
 for train_set_size = train_set_sizes
@@ -75,11 +75,11 @@ for Ti = 1:nT
     times = zeros(numdims,numfolds);
     for d=1:length(dims);
         options.dim = dims(d);
-            disp(['using technique: ' technique ' with train set size ' int2str(train_set_size) ' and dim ' int2str(d)]);
+            disp(['using technique: ' technique ' with train set size ' int2str(train_set_size) ' and dim ' int2str(options.dim)]);
     for i = 1:numfolds
         options.fold = i;
         tic 
-        out(d,i) = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
+        out(d,i) = crossval_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
         times(d,i) = toc;
         disp(['finished iteration ' int2str(i)]);
     end

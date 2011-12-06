@@ -31,15 +31,14 @@ yDev = All_lab((trainsize + 1):(trainsize + devsize),:);
 xTest = All((trainsize + devsize + 1):end,:);
 yTest = All_lab((trainsize + devsize + 1):end,:);
 
-numfolds = 10;
+numfolds = 2;
 noreduce = @(x,y,z,w)deal(x,y,z);
 load_pca_data = 0;
-load_pca_data = 0;
 load_rand_data = 0;
-if(load_pca_data)
+if(load_pca_data && runExperiments)
     PCA_Matrix = load(paths.PCA);  
 end
-if(load_rand_data)
+if(load_rand_data && runExperiments)
     RAND_Matrix = load(paths.RAND);
     disp('successfully read rand matrix');
 end
@@ -62,15 +61,15 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
                      'quad_analysis',struct('function',@matlabclassifierWrapper,'reduce',noreduce,'options', 'diagLinear'),...
                      'naivebayes_smooth_rand',  struct('function',@naiveBayesWrapper,'reduce',RP,'options', struct('smooth',1,'dim',50)));
 
-%Techniques = {'svm','ridge','naivebayes_nosmooth_pca','lasso'};%,'lasso_pca'};
-
-Techniques = {'lassoSupport'};
+%Techniques = {'svm','ridge','naivebayes_smooth_pca','lasso','naivebayes_smooth_rand'};%,'lasso_pca'};
+Techniques = {'svm','naivebayes_smooth_pca'};%,'lasso_pca'};
 
 nT = length(Techniques);
 rate = zeros(1,nT);
 %train_set_sizes = [trainsize];
-train_set_sizes = floor(linspace(1000,trainsize,10));
-if(length(train_set_sizes) == 1 & train_set_sizes(1) == trainsize)
+train_set_sizes = [100];
+%train_set_sizes = floor(linspace(1000,trainsize,10));
+if(length(train_set_sizes) == 1 && train_set_sizes(1) == trainsize)
     evaluator_style = 'crossval';
 else
     evaluator_style = 'subsample';
@@ -116,7 +115,7 @@ for ii = 1:length(train_set_sizes);
         technique = Techniques{Ti};
         infile = [outdatadir technique '.' int2str(train_set_size) '.mat'];
         S = load(infile);
-        Accdata(Ti,ii,:) = S.out;
+        Accdata(Ti,ii,:) = cell2mat(S.out);
         infile = [outdatadir technique '.' int2str(train_set_size) '.times.mat'];
         S = load(infile);
         Timedata(Ti,ii,:) = S.times;

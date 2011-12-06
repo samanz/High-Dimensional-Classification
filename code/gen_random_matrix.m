@@ -1,11 +1,16 @@
     
     d = size(xTrain, 2); % Orginal dimentionality of data
-    k = 1200;
+    k = 12000;
 
-    R_temp = rand(10,d, k);
-    R = zeros(10,d, k);
+    
+    R = {};
+    for i=1:10
+        Rs = spalloc(d,k,.5*d*k);
+        R_temp = rand(d, k);
 
-    R(find (R_temp < 2/6)) = 1;
-    R(find (R_temp < 1/6)) = -1;
-    R(find (R_temp >= 2/6)) = 0;
+        Rs(find (R_temp < 2/6)) = 1;
+        Rs(find (R_temp < 1/6)) = -1;
+%    R(find (R_temp >= 2/6)) = 0;
+        R{i} = Rs;
+    end
     save('../data/RAND.mat','R');

@@ -3,3 +3,7 @@ get new big set. vary size and for each train_set_size do pca + nb and nb. hopef
 add random features in accordance with zipf's law. see if you can recover original support. Also, add features using gaussian, see how support recovery is different. 
 
 vary size and plot increase in number of support vectors. Discuss differences in sparsity between this and L1 log regression. 
+
+do randproj expt. with more dimensions so that you eventually level out. 
+
+do same randproj vs. pca thing with svm to see if it's different
