@@ -3,7 +3,7 @@
     k = 1200;
 
     R_temp = rand(10,d, k);
-    R = zeros(d, k);
+    R = zeros(10,d, k);
 
     R(find (R_temp < 2/6)) = 1;
     R(find (R_temp < 1/6)) = -1;
