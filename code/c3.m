@@ -29,6 +29,7 @@ yTest = All_lab((trainsize + devsize + 1):end,:);
 numfolds = 10;
 noreduce = @(x,y,z,w)deal(x,y,z);
 load_pca_data = 0;
+load_pca_data = 0;
 load_rand_data = 0;
 if(load_pca_data)
     PCA_Matrix = load(paths.PCA);  
@@ -57,6 +58,7 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
                      'naivebayes_smooth_rand',  struct('function',@naiveBayesWrapper,'reduce',RP,'options', struct('smooth',1,'dim',50)));
 
 %Techniques = {'svm','ridge','naivebayes_nosmooth_pca','lasso'};%,'lasso_pca'};
+
 Techniques = {'lassoSupport'};
 
 nT = length(Techniques);
@@ -77,8 +79,12 @@ for Ti = 1:nT
     for i = 1:numfolds
         tic 
         options.fold = i;
-        out{i} = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
-        times(i) = toc;
+        if(strcmp(evaluator_style,'subsample'))
+            out(i) = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
+        elseif(strcmp(evaluator_style,'crossval'))
+            out(i) = crossval_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options); 
+        end
+            times(i) = toc;
         disp(['finished iteration ' i]);
     end
 
