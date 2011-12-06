@@ -1,5 +1,5 @@
 function out = glmnetWrapperFindSupport(xTrain,yTrain,xDev,yDev,xTest,yTest,opt)
-native_indices = SETDIFF(1:size(xTrain,2),opt.nonnative_indices);
+native_indices = setdiff(1:size(xTrain,2),opt.nonnative_indices);
 xTrainNative = full(xTrain(:,native_indices));
 xDevNative = full(xDev(:,native_indices));
 xTestNative = full(xTest(:,native_indices));
@@ -64,6 +64,6 @@ vNative = (fitNative.beta(:,imNative) > 0);
 out.Nativemean = mean( yTest == pTNative(:,imNative));
 out.mean = mean( yTest == pT(:,im));
 %out.Accuracy = sum(v(1:length(vNative)==vNative))+sum(v((length(vNative)+1):end)==0)/length(v);
-out.Precision = (v(1:length(vNative)'*vNative)/sum(v)
-out.Recall = (v(1:length(vNative)'*vNative)/sum(vNative);
+out.Precision = sum(v(1:length(vNative))&vNative)/sum(v);
+out.Recall = sum(v(1:length(vNative))&vNative)/sum(vNative);
 end

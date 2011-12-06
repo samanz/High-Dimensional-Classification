@@ -91,7 +91,7 @@ for Ti = 1:nT
         tic 
         options.fold = i;
         if(strcmp(evaluator_style,'subsample'))
-            out(i) = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
+            out{i} = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
         elseif(strcmp(evaluator_style,'crossval'))
             out(i) = crossval_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options); 
         end
