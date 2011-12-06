@@ -77,6 +77,7 @@ for Ti = 1:nT
         options.dim = dims(d);
             disp(['using technique: ' technique ' with train set size ' int2str(train_set_size) ' and dim ' int2str(d)]);
     for i = 1:numfolds
+        options.fold = i;
         tic 
         out(d,i) = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
         times(d,i) = toc;
