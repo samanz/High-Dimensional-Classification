@@ -72,12 +72,12 @@ for Ti = 1:nT
     classifier = T.function;
     options = T.options;
     reduce = T.reduce;
-    out = zeros(1,numfolds);
+    out = {}; % = zeros(1,numfolds);
     times = zeros(1,numfolds);
     for i = 1:numfolds
         tic 
         options.fold = i;
-        out(i) = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
+        out{i} = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
         times(i) = toc;
         disp(['finished iteration ' i]);
     end
