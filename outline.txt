@@ -1,0 +1,24 @@
+Paper Outline
+	Motivation - David
+	-------------------------
+		Text Specific Information (n<<p) etc..
+	
+	Background
+	-------------------------
+		C.O.D -> Curse of Dimensionality.. Movie ---\
+		Johnson-Lindenstauss / Random Projection ---/ Sam
+		Sparsity, Feature Selection --> David
+		
+	Experiments (Intersperse w/ results)
+	-------------------------
+		Sam
+		======================
+		Vary Train-set Size all classifiers (time vs. trainset size) [small n big n which is better]
+		Feature Selection - Lasso - Random Data [Zipf] [Lasso to Noise, sparse data... even noise can become useful]
+		KNN vs. Random Proj KNN -> PCA KNN. Vary Dimension size [cod]
+		
+		David
+		======================
+		Vary Rand Proj Dim/PCA Dim [Increase dim, struggle over-fitting, go far enough to get cross point in Rand Proj]
+		NB Full vs. NB PCA. Vary Training Set Size. [Very small n -> need dim reduction]
+		SVM Native - SVM PCA Vary Training Set Size [more complex models, less training points (less need PCA)]
