@@ -71,7 +71,7 @@ for Ti = 1:nT
         options.dim = dims(d);
     for i = 1:numfolds
         tic 
-        out(d,i) = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
+        out(d,i) = crossval_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
         times(d,i) = toc;
         disp(['finished iteration ' int2str(i)]);
     end

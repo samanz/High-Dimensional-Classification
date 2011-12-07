@@ -21,8 +21,7 @@ All_lab = All_lab + 1;
 r = randperm(length(All_lab));
 trainsize = 3300;
 devsize = 200;
-%z = find(sum(All,1) ~= 0);
-%All = All(r,z);  
+All = All(r,:);  
 All_lab = All_lab(r);
 xTrain = All(1:trainsize,:);
 yTrain = All_lab(1:trainsize,:);
@@ -31,15 +30,14 @@ yDev = All_lab((trainsize + 1):(trainsize + devsize),:);
 xTest = All((trainsize + devsize + 1):end,:);
 yTest = All_lab((trainsize + devsize + 1):end,:);
 
-numfolds = 10;
+numfolds = 2;
 noreduce = @(x,y,z,w)deal(x,y,z);
 load_pca_data = 0;
-load_pca_data = 0;
 load_rand_data = 0;
-if(load_pca_data)
+if(load_pca_data && runExperiments)
     PCA_Matrix = load(paths.PCA);  
 end
-if(load_rand_data)
+if(load_rand_data && runExperiments)
     RAND_Matrix = load(paths.RAND);
     disp('successfully read rand matrix');
 end
@@ -49,7 +47,7 @@ RP = @(train,dev,test,options)rand_proj_read(train,dev,test,options,RAND_Matrix.
 
 nonnative_indices = (size(xTrain,2)/2):size(xTrain,2);
 
-classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',noreduce,'options', '-t 0'), ...
+classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',noreduce,'options', struct('string','-t 0')), ...
                      'ridge',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',0,'type','')),...
                      'lasso',struct('function',@glmnetWrapper,'reduce',noreduce,'options', struct('family','binomial','alpha',1,'type','')),...
                      'lassoSupport',struct('function',@glmnetWrapperFindSupport,'reduce',noreduce,'options', struct('family','binomial','alpha',1,'type','','nonnative_indices',nonnative_indices)),...
@@ -62,15 +60,15 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
                      'quad_analysis',struct('function',@matlabclassifierWrapper,'reduce',noreduce,'options', 'diagLinear'),...
                      'naivebayes_smooth_rand',  struct('function',@naiveBayesWrapper,'reduce',RP,'options', struct('smooth',1,'dim',50)));
 
-%Techniques = {'svm','ridge','naivebayes_nosmooth_pca','lasso'};%,'lasso_pca'};
-
-Techniques = {'lassoSupport'};
+%Techniques = {'svm','ridge','naivebayes_smooth_pca','lasso','naivebayes_smooth_rand'};%,'lasso_pca'};
+Techniques = {'lasso'};%,'lasso_pca'};
 
 nT = length(Techniques);
 rate = zeros(1,nT);
-%train_set_sizes = [trainsize];
-train_set_sizes = floor(linspace(1000,trainsize,10));
-if(length(train_set_sizes) == 1 & train_set_sizes(1) == trainsize)
+train_set_sizes = [trainsize];
+%train_set_sizes = [100];
+%train_set_sizes = floor(linspace(1000,trainsize,10));
+if(length(train_set_sizes) == 1 && train_set_sizes(1) == trainsize)
     evaluator_style = 'crossval';
 else
     evaluator_style = 'subsample';
@@ -93,7 +91,7 @@ for Ti = 1:nT
         if(strcmp(evaluator_style,'subsample'))
             out{i} = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
         elseif(strcmp(evaluator_style,'crossval'))
-            out(i) = crossval_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options); 
+            out{i} = crossval_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options); 
         end
             times(i) = toc;
         disp(['finished iteration ' i]);
@@ -116,7 +114,7 @@ for ii = 1:length(train_set_sizes);
         technique = Techniques{Ti};
         infile = [outdatadir technique '.' int2str(train_set_size) '.mat'];
         S = load(infile);
-        Accdata(Ti,ii,:) = S.out;
+        Accdata(Ti,ii,:) = cell2mat(S.out);
         infile = [outdatadir technique '.' int2str(train_set_size) '.times.mat'];
         S = load(infile);
         Timedata(Ti,ii,:) = S.times;
