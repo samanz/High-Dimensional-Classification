@@ -21,8 +21,7 @@ All_lab = All_lab + 1;
 r = randperm(length(All_lab));
 trainsize = 3300;
 devsize = 200;
-%z = find(sum(All,1) ~= 0);
-%All = All(r,z);  
+All = All(r,:);  
 All_lab = All_lab(r);
 xTrain = All(1:trainsize,:);
 yTrain = All_lab(1:trainsize,:);
@@ -62,12 +61,12 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
                      'naivebayes_smooth_rand',  struct('function',@naiveBayesWrapper,'reduce',RP,'options', struct('smooth',1,'dim',50)));
 
 %Techniques = {'svm','ridge','naivebayes_smooth_pca','lasso','naivebayes_smooth_rand'};%,'lasso_pca'};
-Techniques = {'svm','naivebayes_smooth_pca'};%,'lasso_pca'};
+Techniques = {'lasso'};%,'lasso_pca'};
 
 nT = length(Techniques);
 rate = zeros(1,nT);
-%train_set_sizes = [trainsize];
-train_set_sizes = [100];
+train_set_sizes = [trainsize];
+%train_set_sizes = [100];
 %train_set_sizes = floor(linspace(1000,trainsize,10));
 if(length(train_set_sizes) == 1 && train_set_sizes(1) == trainsize)
     evaluator_style = 'crossval';
@@ -92,7 +91,7 @@ for Ti = 1:nT
         if(strcmp(evaluator_style,'subsample'))
             out{i} = subsample_and_reduce_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options);
         elseif(strcmp(evaluator_style,'crossval'))
-            out(i) = crossval_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options); 
+            out{i} = crossval_and_classify(train_set_size,classifier,reduce,xTrain,yTrain,xDev,yDev,xTest,yTest,options); 
         end
             times(i) = toc;
         disp(['finished iteration ' i]);
