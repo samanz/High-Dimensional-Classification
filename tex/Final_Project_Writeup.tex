@@ -25,4 +25,59 @@ Text genre classification can be accomplished by first mapping the document to a
 All three of these factors make classification difficult. Through experiments on the binary classification task of determining whether an article from Reuters is or isn't about corporate acquisitions, we help explain trends that occur when performing classification in this difficult regime. 
 \section{Background}
 \section{Experiments and Discussion}
+Outline: 
+I: c3.m plots (acc and time)
+Observations: different algorithms have different behavior depending on size of training set. 
+In figure ~\ref{fig:acc_vs_proj_dim} ...TODO. fix the figures too.
+
+
+\begin{figure}[h!]
+\centering
+\subfloat[Naive Bayes]{\includegraphics[width=.5\textwidth]{../images/nb_acc_vs_dim_pca_sr.png}}
+\subfloat[SVM]{\includegraphics[width=.5\textwidth]{../images/svm_acc_vs_dim_pca_sr.png}}
+\caption{Accuracy vs. dim. PCA Projection}
+\label{fig:acc_vs_proj_dim}
+\end{figure}
+
+In analysis, here, mention something about how with svm model complexity scales with number of training examples, not dimensionality of feature space. Also, point out that it makes sense to use linear kernel, rather than rbf, because of COD. 
+
+\begin{figure}[h!]
+\centering
+\subfloat[Reduced Data Sparsity]{\includegraphics[width=.5\textwidth]{../images/PCAsparsityDensity.png}}
+\subfloat[Cumulative Covariance]{\includegraphics[width=.5\textwidth]{../images/pca_cumsum.png}}
+\caption{Characteristics of PCA-reduced data}
+\label{fig:PCA_RED}
+\end{figure}
+
+\begin{center}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=.5\textwidth]{../images/accuracy_vs_dim_randproj.png}
+\caption{Naive Bayes Acc. vs. num dim Rand. Projection}
+\label{fig:myfig}
+\end{figure}
+\end{center}
+
+%also include naive bayes small pca vs. naive bayes pca. If it was just an issue of underfit gaussians, nonsmall would do better for bigger training sets, but it doesn't. 
+
+\begin{center}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=.5\textwidth]{../images/nb_5_vs_50.png}
+\caption{Naive Bayes Acc. vs. num dim Rand. Projection}
+\label{fig:myfig}
+\end{figure}
+\end{center}
+
+
+\begin{figure}[h!]
+\centering
+\subfloat[L1 regularization]{\includegraphics[width=.5\textwidth]{../images/lassoCoeffCurve.png}}
+\subfloat[L2 regularization]{\includegraphics[width=.5\textwidth]{../images/ridgeCoeffCurve.png}}
+\caption{Coefficient Paths for Regularized Logistic Regression}
+\label{fig:PCA_RED}
+\end{figure}
+
+
 \end{document}
+
