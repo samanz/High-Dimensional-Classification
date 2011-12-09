@@ -27,8 +27,9 @@ All three of these factors make classification difficult. Through experiments on
 \section{Experiments and Discussion}
 Outline: 
 I: c3.m plots (acc and time)
-Observations: different algorithms have different behavior depending on size of training set. 
-In figure ~\ref{fig:acc_vs_proj_dim} ...TODO. fix the figures too.
+Observations: different algorithms have different behavior depending on size of training set. acc and time scale differently for different models.
+alsp point out superiority of nb + pca to nb (this is a good segue into my stuff about dimensionality reduction).
+
 
 
 \begin{figure}[h!]
@@ -36,7 +37,7 @@ In figure ~\ref{fig:acc_vs_proj_dim} ...TODO. fix the figures too.
 \subfloat[Naive Bayes]{\includegraphics[width=.5\textwidth]{../images/nb_acc_vs_dim_pca_sr.png}}
 \subfloat[SVM]{\includegraphics[width=.5\textwidth]{../images/svm_acc_vs_dim_pca_sr.png}}
 \caption{Accuracy vs. dim. PCA Projection}
-\label{fig:acc_vs_proj_dim}
+\label{fig:pca_acc_vs_proj_dim}
 \end{figure}
 
 In analysis, here, mention something about how with svm model complexity scales with number of training examples, not dimensionality of feature space. Also, point out that it makes sense to use linear kernel, rather than rbf, because of COD. 
@@ -54,7 +55,7 @@ In analysis, here, mention something about how with svm model complexity scales 
 \centering
 \includegraphics[width=.5\textwidth]{../images/accuracy_vs_dim_randproj.png}
 \caption{Naive Bayes Acc. vs. num dim Rand. Projection}
-\label{fig:myfig}
+\label{fig:nb_rand_proj}
 \end{figure}
 \end{center}
 
@@ -64,8 +65,8 @@ In analysis, here, mention something about how with svm model complexity scales 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=.5\textwidth]{../images/nb_5_vs_50.png}
-\caption{Naive Bayes Acc. vs. num dim Rand. Projection}
-\label{fig:myfig}
+\caption{Naive Bayes Accuracy vs. Train set size for 5 and 50 PCA dims.}
+\label{fig:5_vs_50_pca}
 \end{figure}
 \end{center}
 
@@ -75,7 +76,7 @@ In analysis, here, mention something about how with svm model complexity scales 
 \subfloat[L1 regularization]{\includegraphics[width=.5\textwidth]{../images/lassoCoeffCurve.png}}
 \subfloat[L2 regularization]{\includegraphics[width=.5\textwidth]{../images/ridgeCoeffCurve.png}}
 \caption{Coefficient Paths for Regularized Logistic Regression}
-\label{fig:PCA_RED}
+\label{fig:Coeff_paths}
 \end{figure}
 
 
