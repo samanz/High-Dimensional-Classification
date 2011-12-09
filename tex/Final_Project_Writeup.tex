@@ -3,9 +3,6 @@
 \usepackage{subfig}
 \usepackage{amsmath}
 \usepackage{amsfonts}
-\newcommand{\pt}{\frac{\partial}{\partial \theta}}
-\newcommand{\ptt}{\frac{\partial^2}{\partial \theta^2}}
-\newcommand{\Ex}{\mathbb{E}}
 
 
 \begin{document}
@@ -18,7 +15,10 @@ An overwhelming amount of text data becomes available every second. The text com
 
 Text genre classification can be accomplished by first mapping the document to a numerical feature representation and then using a general-purpose classification algorithm that was trained on labeled examples. Certain characteristics of text data make classification particularly challenging. These include:
 \begin{enumerate}
-\item Time has shown that the best way to embed documents in feature space is to map to a space where each dimension corresponds to a word in the vocabulary. The value in dimension $i$ for a document can be represented, for example, as the frequency of word $i$ appearing in the document [need a source for this]. Due to Zipf's law, the distribution of word usages in most text is extremely heavy-tailed [need a source for this]. Therefore, the dimensionality of the embeddings for documents in feature space can be quite high, in the tens of thousands. 
+\item Time has shown that often the best way to embed documents in feature space is to map to a space where each dimension corresponds to a word in the vocabulary. The value in dimension $i$ for a document can be represented, for example, as the frequency of word $i$ appearing in the document [need a source for this]. Such representations appear, for example, in state-of-the-art named entity extraction and dependency parsing systems.   
+~\cite{ratinov2009design,nivre2004deterministic}
+
+Due to Zipf's law, the distribution of word usages in most text is extremely heavy-tailed [need a source for this]. Therefore, the dimensionality of the embeddings for documents in feature space can be quite high, in the tens of thousands. 
 \item  In a given document, most words appear 0 times. Given that the feature embedding of documents has a dimension for each word, most dimensions are zero for a particular document. Therefore, features for text data are often extremely sparse. 
 \item Data annotation can be expensive. Given the high dimensionality of feature embeddings for documents, we are often in the $n << p$ regime, where $n$ refers to the number of distinct training points and $p$ is the dimensionality of the feature space. 
 \end{enumerate}
@@ -79,6 +79,11 @@ In analysis, here, mention something about how with svm model complexity scales 
 \label{fig:Coeff_paths}
 \end{figure}
 
+Citing...
+\cite{ratinov2009design}
+
+\bibliographystyle{plain}
+\bibliography{citations}
 
 \end{document}
 
