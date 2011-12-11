@@ -60,10 +60,56 @@ end
 v = (fit.beta(:,im) > 0);
 vNative = (fitNative.beta(:,imNative) > 0);
 
-
 out.Nativemean = mean( yTest == pTNative(:,imNative));
 out.mean = mean( yTest == pT(:,im));
-%out.Accuracy = sum(v(1:length(vNative)==vNative))+sum(v((length(vNative)+1):end)==0)/length(v);
 out.Precision = sum(v(1:length(vNative))&vNative)/sum(v);
 out.Recall = sum(v(1:length(vNative))&vNative)/sum(vNative);
+
+out.selected = [];
+
+betaGZ = (fit.beta > 0);
+betaGZ = (fitNative.beta > 0);
+
+for k=linspace(10, min(max(sum(betaGZ)),max(sum(betaGZ)))-1, 6)
+    ik = round(k);
+    results = {};
+    kIndex = find(sum(betaGZ) > ik,1);
+    kNativeIndex = find(sum(betaGZNative) > ik,1);
+    
+    v = (fit.beta(:,kIndex) > 0);
+    vNative = (fitNative.beta(:,kNativeIndex) > 0);
+
+    results.Nativemean = mean( yTest == pTNative(:,kNativeIndex));
+    results.mean = mean( yTest == pT(:,kIndex));
+    results.Precision = sum(v(1:length(vNative))&vNative)/sum(v);
+    results.Recall = sum(v(1:length(vNative))&vNative)/sum(vNative);
+    results.k = ik;
+    results.featuresSelected = find( betaGZ(:,kIndex) == 1 );
+    results.featuresSelectedNative = find( betaGZNative(:,kNativeIndex) == 1 );
+
+    out.selected = [out.selected results];
+end;
+k=10;
+precision = 1;
+while (precision==1)
+    ik = round(k);
+
+    betaGZ = (fit.beta > 0);
+    betaGZNative = (fitNative.beta > 0);
+    kIndex = find(sum(betaGZ) > ik,1);
+    kNativeIndex = find(sum(betaGZNative) > ik,1);
+    
+    v = (fit.beta(:,kIndex) > 0);
+    vNative = (fitNative.beta(:,kNativeIndex) > 0);
+
+    precision = sum(v(1:length(vNative))&vNative)/sum(v);
+    k
+    precision
+    k=k+1;
+end;
+featuresSelected = find( betaGZ(:,kIndex) == 1 );
+featuresSelectedNative = find( betaGZNative(:,kNativeIndex) == 1 );
+out.firstUnselected = setdiff(featuresSelectedNative,featuresSelected);
+out.firstRedundant = setdiff(featuresSelected,featuresSelectedNative);
+out.redundantAt = k;
 end

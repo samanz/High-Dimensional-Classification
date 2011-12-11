@@ -1,5 +1,6 @@
 clear All; close All;
 runExperiments = 1;
+expand = 1;
 %figure out how to automaticAlly select which lambda value to use in glmnet
 paths = getLocalPaths();
 addpath(paths.matlab);
@@ -7,7 +8,11 @@ addpath(paths.glmnet);
 outdatadir = paths.outdatadir;
 
 %[All_lab All] = load_uci(paths.data);
-datafile = paths.data;
+if(expand)
+    datafile = path.expanded;
+else
+    datafile = paths.data;
+end;
 load(datafile);
 All_lab = labels;
 if(exist('expanded'))
