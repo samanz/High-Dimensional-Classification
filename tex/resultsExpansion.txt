@@ -1,0 +1,2 @@
+Mean	Mean STD	Native Mean	Native STD	Mean Benefit	Benefit STD Precision Mean	Precision STD	Recall Mean	Recall STD	Mean Redundant At	Redundant At STD
+0.9122	0.0179	0.9088	0.0235	0.0034	0.0094	0.9248	0.2138	0.9936	0.0161	66.9000	6.8223
