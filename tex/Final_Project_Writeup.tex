@@ -17,7 +17,7 @@ Text genre classification can be accomplished by first mapping the document to a
 
 Certain characteristics of text data make classification particularly challenging, though. These include:
 \begin{enumerate}
-\item Time has shown that often the best way to embed documents in feature space is to map to a space where each dimension corresponds to a word in the vocabulary. The value in dimension $i$ can be represented, for example, as the frequency of word $i$ appearing in the document [need a source for this]. Such representations appear, for example, in state-of-the-art named entity extraction and dependency parsing systems ~\cite{ratinov2009design,nivre2004deterministic}. Due to Zipf's law, the distribution of word usages in most text is extremely heavy-tailed [need a source for this]. Therefore, the dimensionality of the embeddings for documents in feature space can be quite high, in the tens of thousands. 
+\item Time has shown that often the best way to embed documents in feature space is to map to a space where each dimension corresponds to a word in the vocabulary. The value in dimension $i$ can be represented, for example, as the frequency of word $i$ appearing in the document. Such representations appear, for example, in state-of-the-art named entity extraction and dependency parsing systems ~\cite{ratinov2009design,nivre2004deterministic}. Due to Zipf's law, the distribution of word usages in most text is extremely heavy-tailed [need a source for this]. Therefore, the dimensionality of the embeddings for documents in feature space can be quite high, in the tens of thousands. 
 \item  In a given document, most words in the vocabulary appear 0 times. Given that the feature embedding of documents has a dimension for each word, most dimensions are zero for a particular document. Therefore, features for text data are often extremely sparse. 
 \item Data annotation can be expensive. Given the high dimensionality of feature embeddings for documents, we are often in the $n << p$ regime, where $n$ refers to the number of distinct training points and $p$ is the dimensionality of the feature space. 
 \end{enumerate}
@@ -25,6 +25,28 @@ Certain characteristics of text data make classification particularly challengin
 All three of these factors make classification difficult. Besides classification, additional language processing tasks, which often rely on linear models, svm's, etc. within an inner loop, are challenging because of these data characteristics.  We present experiments  using small amounts of very sparse data for text genre classification in order to help explain general trends and considerations when dealing with data in this difficult regime. 
 
 \section{Background}
+
+SAM: C.O.D -> Curse of Dimensionality.. Movie 
+           Johnson-Lindenstauss / Random Projection 
+
+David: Feature Selection/ Sparsity
+
+Include formulas for the various models' decision criteria.
+
+  Liang paper:
+  ~\cite{liang2008asymptotic}
+  "while discriminative methods achieve lower asymptotic error, generative methods might be better when training data are limited."
+  
+  
+  
+
+	In addition to providing a means for feature selection and model interpretation, regularization is desirable in order to diminish the risk of overfitting, which is a serious concern in the $n << p$ regime. TODODO some sentence from ESL.
+	It's clear that regularization is desirable in general, but it's worth considering alternative regularization schemes other that $L_1$, especially if encouraging sparse models is not an objective. A natural alternative is $L_2$ regularization, which is widely used due to its linear gradient. In the case of regularized logistic regression, Andrew Ng produced important theoretical results in 2004 concerning differences between regularization with each. He proved that the "sample complexity of L1-regularized logistic regression is logarithmic in the number of features." However,  "the sample complexity of L2-regularized logistic regression is linear in the number of features"  ~\cite{ng2004feature}. Sample complexity is the number of training points necessary to obtain a desired amount of generalization error with a certain probability. The basic intuition for his proof is that the $L_2$ regularized logistic regression objective is invariant to rotations of the training data in feature space, and there exists a pathological rotation such that linear sample size is necessary. $L_1$ regularization doesn't allow such rotations, and further, one can show that it requires logarithmically-many samples. Though these are worst-case asymptotics, Ng show through experiments that  this sample complexity occurs often in practice.  
+
+This suggests that there are two fundamental regimes, depending on the amount of training data available. In the first, when little data is available, we should use $L_1$ regularization. In the other regime, however, you should use $L_2$ regularization because we have enough data to overcome the linear sample complexity. TODODO in the experiments section, we present results supporting this claim. 
+
+something about regularization with SVMs.
+
 \section{Experiments and Discussion}
 Outline: 
 I: c3.m plots (acc and time)
