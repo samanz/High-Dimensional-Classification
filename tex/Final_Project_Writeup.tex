@@ -11,7 +11,7 @@
 \maketitle
 \section{Introduction}
 
-An overwhelming amount of text data becomes available every second. The text comes in chunks corresponding to articles, press releases, blog posts, tweets, etc. These can all be thought of in general terms as 'documents'. Suppose you are looking for particular information in a very large collection of documents. A common real world situation is that there are so many documents that the time cost of looking for the information in all of the documents is prohibitive. Many of these documents may be irrelevant, however. You aren't likely to find the latest information on the European economy by looking in the sports section of the Wall Street Journal, but looking in the main section would be fruitful. Here, there are underlying genres for documents given by the section of the newspaper that they appear in. In many settings, annotation of such underlying genres is not available explicitly, and we require automatic methods for discerning the genre of a document. 
+An overwhelming amount of text data becomes available every second. The text comes in chunks corresponding to articles, press releases, blog posts, tweets, etc. These can all be thought of in general terms as `documents'. Suppose you are looking for particular information in a very large collection of documents. A common real world situation is that there are so many documents that the time cost of looking for the information in all of the documents is prohibitive. Many of these documents may be irrelevant, however. You aren't likely to find the latest information on the European economy by looking in the sports section of the Wall Street Journal, but looking in the main section would be fruitful. Here, there are underlying genres for documents given by the section of the newspaper that they appear in. In many settings, annotation of such underlying genres is not available explicitly, and we require automatic methods for discerning the genre of a document. 
 
 Text genre classification can be accomplished by first mapping the document to a numerical feature representation and then using a general-purpose classification algorithm that was trained on labeled examples. 
 
@@ -39,7 +39,7 @@ Why $L_1$ regularization leads to model sparsity is not immediately obvious. Dir
 
 
 \begin{center}
-\begin{figure}[h!] 
+\begin{figure}[!ht] 
 \centering
 \includegraphics[width=.5\textwidth]{../images/sparsity.png}
 \caption{L1 vs. L2 Regularization}
@@ -51,7 +51,7 @@ Why $L_1$ regularization leads to model sparsity is not immediately obvious. Dir
 
 	In addition to providing a means for feature selection and model interpretation, regularization is desirable in order to diminish the risk of overfitting, which is a serious concern in the $n << p$ regime. In the formulation above for discriminative probabilistic models, the coefficient $\lambda$ specifies how much to trust the data's inclination for a irregular decision boundary vs. how much to shrink coefficients towards a more simple boundary. Similarly, in support vector machines, the parameter $C$ determines an upper bound on the number of misclassified training points, which controls how irregular the decision boundary can be~\cite[332]{Bishop}.
 
-	It's clear that regularization is desirable in general. In the case of probabilistic models like logisitic regression, it's worth considering alternative regularization schemes other that $L_1$, especially if encouraging sparse models is not an objective. A natural alternative is $L_2$ regularization, which is widely used due to its linear gradient. In the case of regularized logistic regression, Andrew Ng produced important theoretical results in 2004 concerning differences between regularization with each. He proved that the "sample complexity of L1-regularized logistic regression is logarithmic in the number of features." However,  "the sample complexity of L2-regularized logistic regression is linear in the number of features"  ~\cite{ng2004feature}. Sample complexity is the number of training points necessary to obtain a desired amount of generalization error with a certain probability. The basic intuition for his proof is that the $L_2$ regularized logistic regression objective is invariant to rotations of the training data in feature space, and there exists a pathological rotation such that linear sample size is necessary. $L_1$ regularization doesn't allow such rotations, and further, one can show that it requires logarithmically-many samples. Though these are worst-case asymptotics, Ng show through experiments that  this sample complexity occurs often in practice. Therefore, it seems using $L_1$ regularization for logistic regression in our small-n regime is advisable. 
+	It's clear that regularization is desirable in general. In the case of probabilistic models like logisitic regression, it's worth considering alternative regularization schemes other that $L_1$, especially if encouraging sparse models is not an objective. A natural alternative is $L_2$ regularization, which is widely used due to its linear gradient. In the case of regularized logistic regression, Andrew Ng produced important theoretical results in 2004 concerning differences between regularization with each. He proved that the ``sample complexity of L1-regularized logistic regression is logarithmic in the number of features." However,  ``the sample complexity of L2-regularized logistic regression is linear in the number of features"  ~\cite{ng2004feature}. Sample complexity is the number of training points necessary to obtain a desired amount of generalization error with a certain probability. The basic intuition for his proof is that the $L_2$ regularized logistic regression objective is invariant to rotations of the training data in feature space, and there exists a pathological rotation such that linear sample size is necessary. $L_1$ regularization doesn't allow such rotations, and further, one can show that it requires logarithmically-many samples. Though these are worst-case asymptotics, Ng show through experiments that  this sample complexity occurs often in practice. Therefore, it seems using $L_1$ regularization for logistic regression in our small-n regime is advisable. 
 \subsection{Models}
 	Now that we have established guiding principles for how to employ dimensionality reduction and regularization in the $n << p$ context we're interested in, we need to discuss more general principles concerning how to choose between various types of models for our genre classification task. In our experiments to follow, we consider 4 principle types of models and a representative model for each: discriminative (logistic regression), generative (naive Bayes), and two parametric ones (support vector machines and k-nearest neighbors). 
 
@@ -73,7 +73,7 @@ alsp point out superiority of nb + pca to nb (this is a good segue into my stuff
 
 
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \subfloat[Naive Bayes]{\includegraphics[width=.5\textwidth]{../images/nb_acc_vs_dim_pca_sr.png}}
 \subfloat[SVM]{\includegraphics[width=.5\textwidth]{../images/svm_acc_vs_dim_pca_sr.png}}
@@ -83,7 +83,7 @@ alsp point out superiority of nb + pca to nb (this is a good segue into my stuff
 
 In analysis, here, mention something about how with svm model complexity scales with number of training examples, not dimensionality of feature space. Also, point out that it makes sense to use linear kernel, rather than rbf, because of COD. 
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \subfloat[Reduced Data Sparsity]{\includegraphics[width=.5\textwidth]{../images/PCAsparsityDensity.png}}
 \subfloat[Cumulative Covariance]{\includegraphics[width=.5\textwidth]{../images/pca_cumsum.png}}
@@ -92,7 +92,7 @@ In analysis, here, mention something about how with svm model complexity scales 
 \end{figure}
 
 \begin{center}
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=.5\textwidth]{../images/accuracy_vs_dim_randproj.png}
 \caption{Naive Bayes Acc. vs. num dim Rand. Projection}
@@ -103,7 +103,7 @@ In analysis, here, mention something about how with svm model complexity scales 
 %also include naive bayes small pca vs. naive bayes pca. If it was just an issue of underfit gaussians, nonsmall would do better for bigger training sets, but it doesn't. 
 
 \begin{center}
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=.5\textwidth]{../images/nb_5_vs_50.png}
 \caption{Naive Bayes Accuracy vs. Train set size for 5 and 50 PCA dims.}
@@ -112,7 +112,7 @@ In analysis, here, mention something about how with svm model complexity scales 
 \end{center}
 
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \subfloat[L1 regularization]{\includegraphics[width=.5\textwidth]{../images/lassoCoeffCurve.png}}
 \subfloat[L2 regularization]{\includegraphics[width=.5\textwidth]{../images/ridgeCoeffCurve.png}}
