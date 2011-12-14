@@ -25,11 +25,7 @@ Certain characteristics of text data make classification particularly challengin
 All three of these factors make classification difficult. Besides classification, additional language processing tasks, which often rely on linear models, svm's, etc. within an inner loop, are challenging because of these data characteristics.  We present experiments  using small amounts of very sparse data for text genre classification in order to help explain general trends and considerations when dealing with data in this difficult regime. 
 
 \section{Background}
-\subsection{Dimensionality}
-SAM: C.O.D -> Curse of Dimensionality.. Movie \\
-	PCA\\
-           Johnson-Lindenstauss / Random Projection \\
-
+\include{dimensionality}
 \subsection{Regularization and Sparsity}
 	Rather than projecting the data to a lower dimensional subspace, an alternative technique to handle unmanageable input dimensionality is to automatically select which input features are useful and which are not, and only use the relevant ones. In models like logistic regression that place a weight on each input feature, this leads to model sparsity, in that few of the model coefficients are nonzero. This is distinct from data sparsity, in which most of the data matrix is zero. Sparsity of a certain feature by no means suggests that the feature should receive zero weight in the model. For example, in the genre classification example, there may be a word that only in occurs in one-thousandth of the documents, but it is 100\% correlated with the target classification label. 
 
@@ -117,6 +113,8 @@ In analysis, here, mention something about how with svm model complexity scales 
 \caption{Coefficient Paths for Regularized Logistic Regression}
 \label{fig:Coeff_paths}
 \end{figure}
+
+\include{sfigures}
 
 Citing...
 \cite{ratinov2009design}
