@@ -1,5 +1,5 @@
 clear All; close All;
-runExperiments = 1;
+runExperiments = 0;
 %figure out how to automatically select which lambda value to use in glmnet
 paths = getLocalPaths();
 addpath(paths.matlab);
@@ -62,9 +62,9 @@ classifiers =        struct('svm',struct('function',@libsvmWrapper,'reduce',nore
                      'quad_analysis',struct('function',@matlabclassifierWrapper,'reduce',noreduce,'options', 'diagLinear'),...
                      'naivebayes_smooth_rand',  struct('function',@naiveBayesWrapper,'reduce',RP,'options', struct('smooth',1,'dim',50)));
 
-%Techniques = {'svm','svm_pca','ridge','lasso_pca','naivebayes_smooth_rand','naivebayes_smooth_pca_small','naivebayes_smooth_pca','lasso'};%,'lasso_pca'};
+Techniques = {'svm','svm_pca','ridge','lasso_pca','naivebayes_smooth_rand','naivebayes_smooth_pca_small','naivebayes_smooth_pca','lasso','naivebayes_smooth'};%,'lasso_pca'};
 %Techniques = {'lasso'};%,'lasso_pca'};
-Techniques = {'naivebayes_smooth'};%,'lasso_pca'};
+%Techniques = {'naivebayes_smooth'};%,'lasso_pca'};
 
 nT = length(Techniques);
 rate = zeros(1,nT);
@@ -125,7 +125,7 @@ for ii = 1:length(train_set_sizes);
         Timedata(Ti,ii,:) = S.times;
     end
 end
-colors = {'red','blue','green','cyan','black','yellow','magenta',[.55 .44 .13]};
+colors = {'red','blue','green','cyan','black','yellow','magenta',[.55 .44 .13],[.12 .44 .123]};
 hold on;
 legends = {}
 for i=1:length(Techniques)
