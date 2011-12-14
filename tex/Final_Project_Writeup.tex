@@ -3,7 +3,7 @@
 \usepackage{subfig}
 \usepackage{amsmath}
 \usepackage{amsfonts}
-
+\usepackage[margin=1in]{geometry}
 
 \begin{document}
 \title{CS689 Final Project:\\ Text Genre Classification in the $n <<p$ Regime}
@@ -36,8 +36,6 @@ SAM: C.O.D -> Curse of Dimensionality.. Movie \\
 	In order to achieve model sparsity, one could, for example, find the correlation between target classification labels and each feature and train a model which only considers the most correlated features. The shortcoming of such a technique, however, is that two features that are highly correlated with the labels may also be highly correlated with each other, so that they are no more informative jointly than in isolation ~\cite{tibshirani1996regression}. An alternative technique, which is widely adopted, is to add an $L_1$ regularization term to the training objective function. For example, in a discriminative probabilistic model, which models the conditional probability of the label given the input data, we have the regularized maximum likelihood objective: 
 	$$\max_{\theta} \sum_{i = 1}^n log\left(P(y_i | x_i; \theta)\right) + \lambda \lVert \theta \rVert_1$$
 Why $L_1$ regularization leads to model sparsity is not immediately obvious. Directly minimizing the number of nonzero coefficients, $\lVert \theta \rVert_0$, would directly reflect our objective. However, this converts the training process to a combinatorial search, which is intractable for high input dimensionality . In some sense, $L_1$ is effective because it is the closest convex regularization term to $L_0$ ~\cite{LectureL1}. Figure \ref{fig:sparsity} is taken from the original paper advocating $L_1$ regularization for linear regression, which is known as the LASSO  ~\cite{tibshirani1996regression}. The axes represent possible values for the coefficients in a two-dimensional regression problem and the filled in square and circle are boundaries for which the $L_1$ and $L_2$ norm of the coefficient vector is less than 1, respectively. Coefficients are chosen to minimize the squared loss between the linear model's prediction and the target values. This squared loss takes the form of a quadratic form, so its level sets are ellipses. The level sets are likely to intersect the $L_1$ coefficient square at a corner, yielding only one nonzero coefficient. $L_2$ regularization, on the right, doesn't yield such behavior. 
-
-
 \begin{center}
 \begin{figure}[!ht] 
 \centering
