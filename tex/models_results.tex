@@ -9,29 +9,31 @@
 
 Now it's time to actually see how well the various algorithms we have discussed performed on our dataset. In table \ref{tab:AccTable}, we list the performance of various classification algorithms on our dataset. The best performing classifier was an svm that uses the raw data that wasn't reduced in dimensionality. The first 5 rows of the table are all quite comparable in performance, however. 
 
-TODODODODODODO Table with really small number of training examples
+TODODODODODODO explanation of the 50 vs. 1500 column and more analysis of results. 
 
 \begin{center}
 \begin{table}
-\begin{tabular}{lccl}
+\begin{tabular}{lccccl}
 \hline
-Name & Mean \% & STD \% & description\\
+%Name & 50-Mean \% & 50-STD \% & 1500-Mean \% & 1500-STD \% &  description\\
+Name & 50-$\mu$ \% & 50-$\sigma$ \% & 1500-$\mu$ \% & 1500-$\sigma$ \% &  desc.\\
 \hline
-svm & 95.0 & 0.8 & svm with linear kernel\\
-ridge & 94.0 & 0.2 & $L_2$ regularized logistic regression\\
-lasso pca &  94.0 & 0.5 & $L_1$ regularized logistic regression\\
-svm pca & 93.3 & 0.2 &  linear kernel svm with 50 dim pca applied first\\
-lasso & 92.4 & 0.8 & $L_1$ regularized logistic regression\\
-naivebayes smooth pca small & 90.1 & 0.3  & naivebayes smooth with 5-dim. pca\\
-naivebayes smooth  & 79.0 & 1.8& naive bayes with `add one' smoothing\\
-naivebayes smooth pca  & 77.4 & 0.8 & naivebayes smooth with 50-dim. pca\\
-naivebayes smooth rand & 67.0 & 2.8 & naivebayes smooth with 50-dim random projection\\
+svm & 84.4 & 7.3 & 94.4 & 7.3 & svm with linear kernel\\
+%ridge & XX.X & YY.Y & 94.0 & 0.2 & $L_2$ regularized logistic regression\\
+lasso pca &  86.4 & 6.1& 94.0 & 0.5 & $L_1$ regularized logistic regression\\
+svm pca &54.6 & 11.1&  93.3 & 0.2 &  linear kernel svm with 50 dim pca applied first\\
+lasso & 73.7& 5.7 & 92.4 & 0.8 & $L_1$ regularized logistic regression\\
+naivebayes pca small & 87.5& 2.4 & 90.1 & 0.3  & naivebayes smooth with 5-dim. pca\\
+naivebayes & 60.8 & 7.9& 79.0 & 1.8& naive bayes with `add one' smoothing\\
+naivebayes pca  & 74.2 & 5.2 & 77.4 & 0.8 & naivebayes smooth with 50-dim. pca\\
+naivebayes rand & 55.6 & 3.4 & 67.0 & 2.8  & naivebayes smooth with 50-dim random projection\\
 \end{tabular}
 \caption{Classifiers}
 \label{tab:Classifiers}
 \par
 \end{table}
 \end{center}
+
 
 
 One of our motivating objectives is to find sub-regimes of $n << p$. To do this, we subsampled our training set and varied the size of the reduced set. For each size, we performed 10-fold cross validation. In Figure \ref{fig:largecompareAcc}, we plot the accuracy of the various algorithms as a function of the training set size. We weren't able to find any interesting sub-regimes or crossing points, unfortunately. Perhaps our full dataset was too small to begin with, and interesting sub-regimes would have occurred if we had increased rather than decreased the size of the training data. Another reason that perhaps we don't see any interesting sub-regimes is that classification on our dataset is simply too easy and the performance of many of the classifiers is squeezed into the nineties. 
