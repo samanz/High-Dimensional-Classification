@@ -33,7 +33,7 @@ In contrast, in \ref{fig:pca_acc_vs_proj_dim}(b), we use an linear-kernel SVM, w
 \label{fig:pca_acc_vs_proj_dim}
 \end{figure}
 
-TODO add a note that when we do random projections and increase dimensionality we keep the p-1 previous projection dimensions fixed. 
+Next, we vary the dimensionality of a random projection and compute the 10-fold cross validation accuracy of naive Bayes. We don't experience anything with a distinct peak like we did with PCA, and the overall accuracy isn't as good as with PCA. However, it is important to recognize that we obtain reasonably good classification accuracy using random dimensionality reduction. Estimating the projection matrix for PCA is quite time-intensive, while the random projection matrix can be generated quite easily. Training the naive Bayes model on the reduced data is of course much faster than training on the full 17,000 dimensions. Therefore, for practical situations where a model needs to be trained quickly, random projection and naive Bayes is a good candidate. 
 
 \begin{center}
 \begin{figure}[!ht]
