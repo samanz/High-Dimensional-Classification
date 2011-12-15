@@ -62,7 +62,7 @@ Overall, there is no technique that seems optimal apriori for the type of classi
 
 \section{Experiments and Discussion}
 
-For this project we used a post-processed version the Reuters RCV1 dataset ~\cite{lewis2004rcv1}. This dataset is presented as a matrix of the TF-IDF (Term Frequency weighted by importance of term by the logarithm of the number of documents over the number of documents containing the term) values of the words as each feature. For the labels, we selected a target class that had rather high frequency of occurrence, namely C181 (MERGERS/ACQUISITIONS). We subsampled the dataset so as to contain 4000 examples, half of which belong to the target class and half of which belong to any class besides for the target class.
+For this project we used a post-processed version the Reuters RCV1 dataset ~\cite{lewis2004rcv1}. This dataset is presented as a matrix of the TF-IDF (Term Frequency weighted by importance of term by the logarithm of the number of documents over the number of documents containing the term) values of the words as each feature. For the labels, we selected a target class that had rather high frequency of occurrence, namely C181 (MERGERS/ACQUISITIONS). We subsampled the dataset so as to contain 3000 examples, half of which belong to the target class and half of which belong to any class besides for the target class.
 In parallel with the three sections of the paper's background section, we  present experiments and discussion on three themes: dimensionality, regularization and model sparsity, and model selection. 
 
 \subsection{Dimensionality}
