@@ -7,9 +7,9 @@
 
 %\begin{document}
 
-Now it's time to actually see how well the various algorithms we have discussed performed on our dataset. In table \ref{tab:AccTable}, we list the performance of various classification algorithms on our dataset. The best performing classifier was an svm that uses the raw data that wasn't reduced in dimensionality. The first 5 rows of the table are all quite comparable in performance, however. 
+Now it's time to actually see how well the various algorithms we have discussed performed on our dataset. In table \ref{tab:Classifiers}, we list the performance of various classification algorithms on our dataset. The best performing classifier was an svm that uses the raw data that wasn't reduced in dimensionality. The first 5 rows of the table are all quite comparable in performance, however. 
 
-TODODODODODODO explanation of the 50 vs. 1500 column and more analysis of results. 
+Although many of the methods used performed quite well with a large amount of training examples used, there was a variability in these model's performance with a smaller amount of training examples used. Most notably, there was a large decrease in performance with a small number of examples using svm pca compared to a large number of examples. L1 regularized logistic regression also performed significantly worse with a small number of data points.
 
 \begin{center}
 \begin{table}
@@ -20,7 +20,7 @@ Name & 50-$\mu$ \% & 50-$\sigma$ \% & 1500-$\mu$ \% & 1500-$\sigma$ \% &  desc.\
 \hline
 svm & 84.4 & 7.3 & 94.4 & 7.3 & svm with linear kernel\\
 ridge & 91.3 & 1.7 & 94.0 & 0.2 & $L_2$ regularized logistic regression\\
-lasso pca &  86.4 & 6.1& 94.0 & 0.5 & $L_1$ regularized logistic regression\\
+lasso pca &  86.4 & 6.1& 94.0 & 0.5 & $L_1$ regularized logistic regression with 50 dim pca\\
 svm pca &54.6 & 11.1&  93.3 & 0.2 &  linear kernel svm with 50 dim pca applied first\\
 lasso & 73.7& 5.7 & 92.4 & 0.8 & $L_1$ regularized logistic regression\\
 naivebayes pca small & 87.5& 2.4 & 90.1 & 0.3  & naivebayes smooth with 5-dim. pca\\

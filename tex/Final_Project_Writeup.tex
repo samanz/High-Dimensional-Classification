@@ -17,7 +17,7 @@ Text genre classification can be accomplished by first mapping the document to a
 
 Certain characteristics of text data make classification particularly challenging, though. These include:
 \begin{enumerate}
-\item Time has shown that often the best way to embed documents in feature space is to map to a space where each dimension corresponds to a word in the vocabulary. The value in dimension $i$ can be represented, for example, as the frequency of word $i$ appearing in the document. Such representations appear, for example, in state-of-the-art named entity extraction and dependency parsing systems ~\cite{ratinov2009design,nivre2004deterministic}. Due to Zipf's law, the distribution of word usages in most text is extremely heavy-tailed [need a source for this]. Therefore, the dimensionality of the embeddings for documents in feature space can be quite high, in the tens of thousands. 
+\item Time has shown that often the best way to embed documents in feature space is to map to a space where each dimension corresponds to a word in the vocabulary. The value in dimension $i$ can be represented, for example, as the frequency of word $i$ appearing in the document. Such representations appear, for example, in state-of-the-art named entity extraction and dependency parsing systems ~\cite{ratinov2009design,nivre2004deterministic}. Due to Zipf's law, the distribution of word usages in most text is extremely heavy-tailed ~\cite{zipf1935psycho}. Therefore, the dimensionality of the embeddings for documents in feature space can be quite high, in the tens of thousands. 
 \item  In a given document, most words in the vocabulary appear 0 times. Given that the feature embedding of documents has a dimension for each word, most dimensions are zero for a particular document. Therefore, features for text data are often extremely sparse. 
 \item Data annotation can be expensive. Given the high dimensionality of feature embeddings for documents, we are often in the $n << p$ regime, where $n$ refers to the number of distinct training points and $p$ is the dimensionality of the feature space. 
 \end{enumerate}
@@ -62,7 +62,7 @@ Overall, there is no technique that seems optimal apriori for the type of classi
 
 \section{Experiments and Discussion}
 
-For this project we used a post-processed version the Reuters RCV1 dataset ~\cite{lewis2004rcv1}. This dataset is presented as a matrix of the TF-IDF (Term Frequency weighted by importance of term by the logarithm of the number of documents over the number of documents containing the term) values of the words as each feature. For the labels, we selected a target class that had rather high frequency of occurrence, namely C181 (MERGERS/ACQUISITIONS). We subsampled the dataset so as to contain 4000 examples, half of which belong to the target class and half of which belong to any class besides for the target class.
+For this project we used a post-processed version the Reuters RCV1 dataset ~\cite{lewis2004rcv1}. This dataset is presented as a matrix of the TF-IDF (Term Frequency weighted by importance of term as the logarithm of the number of documents over the number of documents containing the term) values of the words as each feature. For the labels, we selected a target class that had rather high frequency of occurrence, namely C181 (MERGERS/ACQUISITIONS). We subsampled the dataset so as to contain 4000 examples, half of which belong to the target class and half of which belong to any class besides for the target class.
 In parallel with the three sections of the paper's background section, we  present experiments and discussion on three themes: dimensionality, regularization and model sparsity, and model selection. 
 
 \subsection{Dimensionality}
@@ -74,6 +74,10 @@ In parallel with the three sections of the paper's background section, we  prese
 \subsection{Model Selection}
 \input{models_results}
 
+\section{Conclusion}
+
+In conclusion, we have showed many interested traits of the $n << p$ regime specifically in the case of very space data, common in application with large amount of text available. Many off the shelf methods worked handily, for example with only 100 examples with as much as 17,000 dimensions we see accuracy at 86 percent with logistic regression. This makes us believe that we may have been able to find a classification task that was more difficult and would have more readily allowed us to explore more of the problems in the $n << p$ regime. Additionally, 
+performing dimensionality reduction even using random projections does helps reduce some of the problems with high-dimensional data. Additionally, we have shown that feature selection using $L_1$ regularized Logistic Regression is in fact robust to additional random features added to original dataset.
 \pagebreak
 \bibliographystyle{plain}
 \bibliography{citations}

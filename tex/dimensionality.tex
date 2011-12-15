@@ -8,7 +8,7 @@
 % paragraph paragraph_name (end)
 \paragraph{Johnson-Lindenstauss} % (fold)
 \label{par:johnson_lindenstauss}
-The curse of dimensionality suggests that we may benefit from decreasing data dimensionality if we can compress it a lower dimensional space while maintaing its important, discriminative characteristics. The summarization of a feature space into a lower dimensional space is called dimensionality reduction. Johnson and Lindenstauss  showed in a well-used lemma that a set of points can be projected into a smaller dimensional space from a larger one such that the points' pairwise distances are nearly preserved ~\cite{johnson1984extensions}. Formally, there exists a mapping $f$ such that $:\mathbb{R}^n \rightarrow \mathbb{R}^k$ with probability $1-n^{-\beta}$ ,  $\forall u,v \in P$:
+The curse of dimensionality suggests that we may benefit from decreasing data dimensionality if we can compress it a lower dimensional space while maintaining its important, discriminative characteristics. The summarization of a feature space into a lower dimensional space is called dimensionality reduction. Johnson and Lindenstauss  showed in a well-used lemma that a set of points can be projected into a smaller dimensional space from a larger one such that the points' pairwise distances are nearly preserved ~\cite{johnson1984extensions}. Formally, there exists a mapping $f$ such that $:\mathbb{R}^n \rightarrow \mathbb{R}^k$ with probability $1-n^{-\beta}$ ,  $\forall u,v \in P$:
 \begin{equation}
 	(1 - \epsilon)||u - v||^2 \le ||f(u)-f(v)||^2 \le (1+\epsilon)||u-v||^2
 \end{equation}  ~\cite{achlioptas2001database} The two methods that were used in this project for performing dimensionality reduction are Principal Component Analysis (PCA) using Singular Value Decomposition (SVD) as well the method of random projections.
@@ -16,13 +16,13 @@ The curse of dimensionality suggests that we may benefit from decreasing data di
 \paragraph{Singular Value Decomposition} % (fold)
 \label{par:singular_value_decomposition}
 The method of Singular Value Decomposition decomposes a data matrix to the form $A = U \Sigma V^T$, where 
-if $A$ is of size $m \times n$, $U$ is an orthogonal matrix of size $m \times p$, $\Sigma$ is a diagonal matrix of size $p \times p$, and $V$ is an orthogonal matrix of size $n \times p$. If we take a limited of the the projection matrices in the form $A_k = \sum_{i=1}^k\sigma_iu_iv_i^T$ the resulting matrix is called the optimal rank-k approximation of the original matrix. ~\cite{LecturePCA}. In order to project the data into principal component space we simply right multiply our original data matrix by V.
+if $A$ is of size $m \times n$, $U$ is an orthogonal matrix of size $m \times p$, $\Sigma$ is a diagonal matrix of size $p \times p$, and $V$ is an orthogonal matrix of size $n \times p$. If we take a limited sum of the the projection matrices in the form $A_k = \sum_{i=1}^k\sigma_iu_iv_i^T$ the resulting matrix is called the optimal rank-k approximation of the original matrix. ~\cite{LecturePCA}. In order to project the data into principal component space we simply right multiply our original data matrix by V.
 % paragraph singular_value_decomposition (end)
 \paragraph{Random Projections} % (fold)
 \label{par:random_projections}
-An important implication of the Johnson-Lindenstauss lemma is that if one projects the data matrix using a matrix of orthogonal vectors then distances are nearly preserved. Orthogonalization is a costly task, which often defeats the purpose of performing random projections to increase speed performances. Fortunately, it has been shown that with high dimensional spaces there is a high chance that two vectors are nearly orthogonal, and thus it has been shown that by generating random matrices and projecting down to a lower dimensional space using the random matrices one can preserve distances ~\cite{sulic2010dimensionality}. Let k be the dimension of the space we're projecting down to. We used the form of random projections developed by Achlioptas in the form:
+An important implication of the Johnson-Lindenstauss lemma is that if one projects the data matrix using a matrix of orthogonal vectors then distances are nearly preserved. Orthogonalization is a costly task, which often defeats the purpose of performing random projections to increase speed performances. Fortunately, it has been shown that with high dimensional spaces there is a high chance that two vectors are nearly orthogonal, and thus it has been shown that by generating random matrices and projecting down to a lower dimensional space using the random matrices one can preserve distances ~\cite{sulic2010dimensionality}. Let k be the dimension of the space we're projecting down to. We used the form of random projections developed by Achlioptas as a random matrix with the $i^{th}$ and $j^{th}$ indexed value being set as follows:
 	\begin{equation}
-		r_{ij} = \frac{\sqrt{3}}{\sqrt{k}} \times \left\{
+ 		r_{ij} = \frac{\sqrt{3}}{\sqrt{k}} \times \left\{
 			\begin{array}{ll}
 				+1  & \mbox{with probability } \frac{1}{6} \\
 				+0  & \mbox{with probability } \frac{2}{3} \\
