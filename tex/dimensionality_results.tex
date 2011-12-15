@@ -1,11 +1,11 @@
-\documentclass[]{article}
-\usepackage{graphicx}
-\usepackage{subfig}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage[margin=1in]{geometry}
+%\documentclass[]{article}
+%\usepackage{graphicx}
+%\usepackage{subfig}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage[margin=1in]{geometry}
 
-\begin{document}
+%\begin{document}
 
 
 First, it's worth understanding how basic characteristics of our dataset respond to dimensionality reduction.  In figure \ref{fig:PCA_RED} we estimate a 500-dimensional PCA projection (computing more principle components than 500 was intractable on our high-dimensional dataset). Next, we truncate this to a smaller-dimensional projection, and see how aspects of the data scale with projection size. In  \ref{fig:PCA_RED}(a) we compute the total covariance of the first 500 principle components, and then show what fraction of this total covariance is captured as we increase the dimensionality of the projection. We find that the curve grows quite slowly. In order to capture 50\% of the total covariance, we need to use about 150 principle components. In  \ref{fig:PCA_RED}(b) we measure the sparsity (percentage of zero entries) of the projected design matrix. The raw matrix unprojected matrix is 99.6\% sparse. We find that the sparsity increases quite quickly with PCA projection dimension. Therefore, if we want to capture a reasonable amount of the total covariance, we must deal with very sparse data. 
@@ -57,4 +57,4 @@ TODO add a note that when we do random projections and increase dimensionality w
 \label{fig:distance}
 \end{figure}
 
-\end{document}
+%\end{document}
