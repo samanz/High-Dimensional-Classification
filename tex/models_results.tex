@@ -7,9 +7,9 @@
 
 %\begin{document}
 
-Now it's time to actually see how well the various algorithms we have discussed performed on our dataset. In table \ref{tab:Classifiers}, we list the performance of various classification algorithms on our dataset. The best performing classifier was an svm that uses the raw data that wasn't reduced in dimensionality. The first 5 rows of the table are all quite comparable in performance, however. 
+Now it's time to actually see how well the various algorithms we have discussed performed on our dataset. In table \ref{tab:Classifiers}, we list the performance of various classification algorithms on our dataset. In columns 2 and 3, we show the mean and standard deviation of classification accuracy when training with only 50 examples per class. In the next two columns we train with 1500 examples per class. With the larger training set, the best performing classifier was an svm that uses the raw data that wasn't reduced in dimensionality. The first 5 rows of the table are all quite comparable in performance, however. 
 
-Although many of the methods used performed quite well with a large amount of training examples used, there was a variability in these model's performance with a smaller amount of training examples used. Most notably, there was a large decrease in performance with a small number of examples using svm pca compared to a large number of examples. L1 regularized logistic regression also performed significantly worse with a small number of data points.
+Although many of the methods used performed quite well with a large amounts of training examples, there was variability in these models' performance when a smaller amount of training examples was used. Most notably, there was a large decrease in performance using an svm with pca. L1 regularized logistic regression also performed significantly worse with a small number of data points. It is unclear why these would perform poorly, though. Logistic regression, estimates a simple linear decision boundary, for example, and it seems that this calculation would survive a reduction in training set size well. 
 
 \begin{center}
 \begin{table}
@@ -62,9 +62,9 @@ Overall, one useful a useful outcome of our experiments is that they suggest tha
 \end{figure}
 \end{center}
 
-	In the background section, we discussed an important result due to Ng and Jordan that logistic regression is asymptotically better than naive Bayes, but naive Bayes approaches its higher asymptotic accuracy more quickly ~\ref{jordan2002discriminative}. In figure \ref{fig:LLL}(a), we vary the size of the training set and compare logistic regression with pca and logistic naive Bayes with pca. For this dataset, we are not able to identify a regime of small train set sizes where classification performance for naive Bayes is better. Logistic regression is always superior. One defining characteristic of our dataset, which Ng and Jordan don't account for in their arguments, is the very high level of the data, even after 50-dimensional pca projection (50\% sparse). The number of nonzero observations for each observation is quite low, and thus naive Bayes can not estimate its component-wise Gaussian distributions accurately. Logistic regression makes fewer assumptions about the underlying generative process and consequently less vulnerable to sparsity. 
+	In the background section, we discussed an important result due to Ng and Jordan that logistic regression is asymptotically better than naive Bayes, but naive Bayes approaches its higher asymptotic accuracy more quickly ~\cite{jordan2002discriminative}. In figure ~\ref{fig:LLL} (a), we vary the size of the training set and compare logistic regression with pca and logistic naive Bayes with pca. For this dataset, we are not able to identify a regime of small train set sizes where classification performance for naive Bayes is better. Logistic regression is always superior. One defining characteristic of our dataset, which Ng and Jordan don't account for in their arguments, is the very high level of the data, even after 50-dimensional pca projection (50\% sparse). The number of nonzero observations for each observation is quite low, and thus naive Bayes can not estimate its component-wise Gaussian distributions accurately. Logistic regression makes fewer assumptions about the underlying generative process and consequently less vulnerable to sparsity. 
 
-	We found that dimensionality reduction is important to maintain high classification accuracy for some algorithms in the $n << p$ regime. An additional advantage of it is reduction in time and memory requirements for training. In figure \ref{fig:LLL}(b) we plot the time cost of training a naive Bayes model with pca v.s. a naive Bayes model without pca. We find that the training time for the raw 17,000 dimensional data (red curve) explodes as we increase the training size. Due to the seemingly linear relationship of time vs. train set size for the red curve for most of the train set sizes, its sudden explosion, and the large error bars on the final measurement, it seems like the laptop the experiment was run on became strained and unreliable. When the memory limits of the computer are approached, it suddenly needs to do lots of work to keep things in place, and as a result, runtimes increase tremendously. 
+	We found that dimensionality reduction is important to maintain high classification accuracy for some algorithms in the $n << p$ regime. An additional advantage of it is reduction in time and memory requirements for training. In figure \ref{fig:LLL} (b) we plot the time cost of training a naive Bayes model with pca v.s. a naive Bayes model without pca. We find that the training time for the raw 17,000 dimensional data (red curve) explodes as we increase the training size. Due to the seemingly linear relationship of time vs. train set size for the red curve for most of the train set sizes, its sudden explosion, and the large error bars on the final measurement, it seems like the laptop the experiment was run on became strained and unreliable. When the memory limits of the computer are approached, it suddenly needs to do lots of work to keep things in place, and as a result, runtimes increase tremendously. 
 
 
 \begin{center}
@@ -72,8 +72,8 @@ Overall, one useful a useful outcome of our experiments is that they suggest tha
 \centering
 \subfloat[Which of Ng and Jordan's regimes are we in? Accuracy vs. train set size]{\includegraphics[width=.5\textwidth]{../images/_naivebayes_smooth_pca_lasso_pca_acc.eps}}
 \subfloat[NB train time vs. train set size]{\includegraphics[width=.5\textwidth]{../images/_naivebayes_smooth_naivebayes_smooth_pca_time.eps}}
+\caption{}
 \label{fig:LLL}
-\par
 \end{figure}
 \end{center}
 
